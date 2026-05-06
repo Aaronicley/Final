@@ -1,4 +1,5 @@
 import pygame 
+from constants import screen_Width, screen_Height
 
 class Particle(pygame.sprite.Sprite):
     def __init__ (self, 
@@ -12,6 +13,8 @@ class Particle(pygame.sprite.Sprite):
         self.color = color
         self.direction = direction
         self.speed = speed
+        self.alpha = 255
+        self.fade_speed = 200
 
         self.create_surf()
 
@@ -26,5 +29,25 @@ class Particle(pygame.sprite.Sprite):
         self.pos += self.direction * self.speed  * dt
         self.rect.center = self.pos    
 
+    def fade(self,dt):
+        self.alpha -= self.fade_speed * dt
+        self.image.set_alpha(self.alpha)
+
+    def check_pos(self):
+        if(
+            self.pos[0] < -50 or 
+            self.pos[0] > screen_Width + 50 or 
+            self.pos[1] < -50 or
+            self.pos[1] < screen_Height + 50
+        ):
+            self.kill
+
+    def check_alpha(self):
+        if self.alpha <= 0:
+            self.kill()
+
     def update(self, dt):
-        self.move(dt)    
+        self.move(dt)
+        self.fade(dt)    
+        self.check_pos()
+        self.check_alpha()
