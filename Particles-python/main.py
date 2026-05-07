@@ -28,6 +28,15 @@ def spawn_particles_red(n: int):
         speed = randint(50,400)
         Particle(particle_group, pos, color, direction, speed)
 
+def spawn_particles_purple(n: int):
+    for _ in range(n):
+        pos = pygame.mouse.get_pos()
+        color = choice(("purple","darkviolet","indigo"))
+        direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))
+        direction = direction.normalize()
+        speed = randint(50,400)
+        Particle(particle_group, pos, color, direction, speed)
+
 def spawn_particles_blue_drag():
     init_pos = pygame.mouse.get_pos()
     pos = init_pos[0] + randint(-10, 10), init_pos[1] + randint(-10, 10)
@@ -46,29 +55,47 @@ def spawn_particles_Red_drag():
     speed = randint(50,100)
     Particle(particle_group, pos, color, direction, speed)
 
+def spawn_particles_purple_drag(n):
+    for _ in range(n):
+        init_pos = pygame.mouse.get_pos()
+        pos = init_pos[0] + randint(-10, 10), init_pos[1] + randint(-10, 10)
+        color = choice(("purple","darkviolet","indigo"))
+        direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))
+        direction = direction.normalize()
+        speed = randint(50,100)
+        Particle(particle_group, pos, color, direction, speed)    
+
 def main ():
     is_heldr = False
     is_heldb = False
+    is_heldBoth = False
     while True:
         #pygame events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.mouse.get_pressed()[0]:
+                if pygame.mouse.get_pressed()[0] and pygame.mouse.get_pressed()[2]:
+                    spawn_particles_purple(1000) 
+                    is_heldBoth = True
+                elif pygame.mouse.get_pressed()[0]:
                     spawn_particles_blue(100)
                     is_heldb = True
                 elif pygame.mouse.get_pressed()[2]:
                     spawn_particles_red(100)
-                    is_heldr = True
+                    is_heldr = True    
             if event.type == pygame.MOUSEBUTTONUP:
                 is_heldb = False
-                     
+                is_heldr = False     
+                is_heldBoth = False
             if event.type == floating_particle_timer:
-                if is_heldb == True:
+                if is_heldBoth == True:
+                    spawn_particles_purple_drag(4)
+                elif is_heldb == True:
                     spawn_particles_blue_drag()
-                if is_heldr == True:
+                elif is_heldr == True:
                     spawn_particles_Red_drag()    
+
         #pygame clock
         dt = clock.tick()/1000
 
