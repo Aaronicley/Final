@@ -11,13 +11,13 @@ floating_particle_timer = pygame.event.custom_type()
 pygame.time.set_timer(floating_particle_timer, 10)
 
 def spawn_particles_blue(n: int):
-    for _ in range(n):
-        pos = pygame.mouse.get_pos()
-        color = choice(("blue","mediumblue","dodgerblue"))
-        direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))
-        direction = direction.normalize()
-        speed = randint(50,400)
-        Particle(particle_group, pos, color, direction, speed)
+    for _ in range(n):  #amount of particles spawned per
+        pos = pygame.mouse.get_pos()   # position  
+        color = choice(("blue","mediumblue","dodgerblue")) # colors 
+        direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))  # direction setup
+        direction = direction.normalize() # vector normalization
+        speed = randint(50,400)  # speed control
+        Particle(particle_group, pos, color, direction, speed) # particle logic plugin
 
 def spawn_particles_red(n: int):
     for _ in range(n):
@@ -75,19 +75,24 @@ def main ():
             if event.type == pygame.QUIT:
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.mouse.get_pressed()[0] and pygame.mouse.get_pressed()[2]:
+                if pygame.mouse.get_pressed()[2] and pygame.mouse.get_pressed()[0]:
                     spawn_particles_purple(1000) 
                     is_heldBoth = True
-                elif pygame.mouse.get_pressed()[0]:
+                elif pygame.mouse.get_pressed()[2]:
                     spawn_particles_blue(100)
                     is_heldb = True
-                elif pygame.mouse.get_pressed()[2]:
+                elif pygame.mouse.get_pressed()[0]:
                     spawn_particles_red(100)
-                    is_heldr = True    
+                    is_heldr = True 
+                #call camera function  
+            if event.type  == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    pygame.image.save(display_surface, frame000.png)      
             if event.type == pygame.MOUSEBUTTONUP:
                 is_heldb = False
                 is_heldr = False     
                 is_heldBoth = False
+            #Create Drag effect Logic    
             if event.type == floating_particle_timer:
                 if is_heldBoth == True:
                     spawn_particles_purple_drag(4)
@@ -106,6 +111,8 @@ def main ():
         #update code
         particle_group.update(dt)
         pygame.display.update()
+
+        #call camera function 
 
 
 
