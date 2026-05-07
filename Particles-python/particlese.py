@@ -47,7 +47,17 @@ class Particle(pygame.sprite.Sprite):
             self.kill()
 
     def update(self, dt):
+
         self.move(dt)
         self.fade(dt)    
         self.check_pos()
         self.check_alpha()
+
+class FloatingParticles(Particle):
+    def __init__(self,
+                 groups: pygame.sprite.Group,
+                 pos: list[int],
+                 color: str,
+                 direction: pygame.math.Vector2 ,
+                 speed: int):
+        super().__init__(groups, pos, color, direction, speed)
