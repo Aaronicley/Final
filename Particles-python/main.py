@@ -1,4 +1,5 @@
 import pygame
+import os
 from random import choice, randint,uniform
 from constants import screen_Width, screen_Height
 from particlese import Particle
@@ -65,10 +66,24 @@ def spawn_particles_purple_drag(n):
         speed = randint(50,100)
         Particle(particle_group, pos, color, direction, speed)    
 
+def imageCapture(path_create):
+    name,ext = os.path.splitext(path_create)
+    NumberofImages = 1
+    new_path = path_create
+
+    while os.path.exists(new_path):
+        new_path = f"{name}_{NumberofImages}{ext}"
+        counter += 1
+
+    return new_path
+
 def main ():
     is_heldr = False
     is_heldb = False
     is_heldBoth = False
+    filename = imageCapture("screenshot.png")
+    folderToGoTO = "Photos"
+    ScreenShotPath = os.path.join(folderToGoTO, filename)
     while True:
         #pygame events
         for event in pygame.event.get():
@@ -87,7 +102,7 @@ def main ():
                 #call camera function  
             if event.type  == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    pygame.image.save(display_surface, frame000.png)      
+                    pygame.image.save(display_surface, ScreenShotPath)      
             if event.type == pygame.MOUSEBUTTONUP:
                 is_heldb = False
                 is_heldr = False     
