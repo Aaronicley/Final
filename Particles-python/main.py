@@ -66,24 +66,26 @@ def spawn_particles_purple_drag(n):
         speed = randint(50,100)
         Particle(particle_group, pos, color, direction, speed)    
 
-def imageCapture(path_create):
-    name,ext = os.path.splitext(path_create)
-    NumberofImages = 1
-    new_path = path_create
+def imageCapture(image_name):
+    name,ext = os.path.splitext(image_name)
+    NumberofImages = 0
+    new_name = image_name
+    folder_location = "Photos"
+    file_to_replace = os.path.join(folder_location, new_name)
+    while os.path.exists(file_to_replace):
+        new_name = f"{name}_{NumberofImages}{ext}"
+        NumberofImages += 1
+        file_to_replace = os.path.join(folder_location, new_name)
 
-    while os.path.exists(new_path):
-        new_path = f"{name}_{NumberofImages}{ext}"
-        counter += 1
-
-    return new_path
+    return new_name
 
 def main ():
     is_heldr = False
     is_heldb = False
     is_heldBoth = False
-    filename = imageCapture("screenshot.png")
+    filenameI = imageCapture("screenshot.png")
     folderToGoTO = "Photos"
-    ScreenShotPath = os.path.join(folderToGoTO, filename)
+    ScreenShotPath = os.path.join(folderToGoTO, filenameI)
     while True:
         #pygame events
         for event in pygame.event.get():
@@ -102,7 +104,10 @@ def main ():
                 #call camera function  
             if event.type  == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    pygame.image.save(display_surface, ScreenShotPath)      
+                    print(ScreenShotPath)
+                    pygame.image.save(display_surface, ScreenShotPath)     
+                    filenameN = imageCapture("screenshot.png") 
+                    ScreenShotPath = os.path.join(folderToGoTO,filenameN)
             if event.type == pygame.MOUSEBUTTONUP:
                 is_heldb = False
                 is_heldr = False     
