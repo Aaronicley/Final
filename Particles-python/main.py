@@ -108,6 +108,8 @@ def main ():
                     pygame.image.save(display_surface, ScreenShotPath)     
                     filenameN = imageCapture("screenshot.png") 
                     ScreenShotPath = os.path.join(folderToGoTO,filenameN)
+                if event.key == pygame.K_TAB:
+                    pygame.display.toggle_fullscreen()    
             if event.type == pygame.MOUSEBUTTONUP:
                 is_heldb = False
                 is_heldr = False     
