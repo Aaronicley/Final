@@ -1,0 +1,2 @@
+required 3rd party libraries
+# pygame 
